@@ -3,7 +3,6 @@ package com.lambdaschool.zoos.service;
 import com.lambdaschool.zoos.model.Telephone;
 import com.lambdaschool.zoos.model.Zoo;
 import com.lambdaschool.zoos.repository.ZooRepository;
-import org.hibernate.bytecode.enhance.internal.bytebuddy.EnhancerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 
+@Transactional
 @Service(value = "zooService")
 public class ZooServiceImpl implements ZooService
 {
@@ -39,22 +39,40 @@ public class ZooServiceImpl implements ZooService
     @Override
     public Zoo findZooByName(String name) throws EntityNotFoundException
     {
-        return null;
+        Zoo z = zoorepos.findByZooname(name);
+
+        if (z == null)
+        {
+            throw new EntityNotFoundException("Name " + name + " not found!");
+        }
+        return z;
     }
 
     @Transactional
     @Override
-    public void delete(long id) throws EntityNotFoundException
-    {
-        if (zoorepos.findById(id).isPresent())
-        {
+    public void delete(long id) throws EntityNotFoundException {
+        if (zoorepos.findById(id).isPresent()) {
             zoorepos.deleteZooFromZooAnimals(id);
             zoorepos.deleteById(id);
 
             logger.info("Zoo Deleted");
-        }else
-        {
+        } else {
             throw new EntityNotFoundException(Long.toString(id));
+        }
+    }
+
+    @Transactional
+    @Override
+    public void deleteZooAnimalCombo(long zooid, long animalid)
+    {
+        if (zoorepos.checkZooAnimalCombo(zooid, animalid).getCount() > 0)
+        {
+            zoorepos.deleteZooAnimalCombo(zooid, animalid);
+
+            logger.info("Zoo Animal Combo Deleted");
+        }
+        else {
+            throw new EntityNotFoundException("Zoo id = " + Long.toString(zooid) + " Animal id = " + Long.toString(animalid));
         }
     }
 
@@ -76,6 +94,13 @@ public class ZooServiceImpl implements ZooService
         return zoorepos.save(newZoo);
     }
 
+        @Transactional
+        @Override
+        public void saveZooAnimalCombo(long zooid, long animalid)
+        {
+            zoorepos.saveZooAnimalCombo(zooid, animalid);
+            logger.info("Zoo Animal Combo Inserted");
+        }
 
     @Transactional
     @Override
