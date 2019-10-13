@@ -1,6 +1,5 @@
 package com.lambdaschool.zoos.controller;
 
-import com.lambdaschool.zoos.model.Zoo;
 import com.lambdaschool.zoos.service.ZooService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,30 +16,27 @@ public class ZooController
     @Autowired
     private ZooService zooService;
 
-    // GET: localhost:2019/zoos/zoos
+    // GET
+    // localhost:2019/zoos/zoos
     @GetMapping(value = "/zoos", produces = {"application/json"})
     public ResponseEntity<?> listAllZoos()
     {
         return new ResponseEntity<>(zooService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/zoos/{zooId}",
-            produces = {"application/json"})
-    public ResponseEntity<?> getZooById(
-            @PathVariable
-                    Long zooId)
+    // GET
+    // localhost:2019/zoos/zoos/{id}
+    @GetMapping(value = "/zoos/{id}", produces = {"application/json"})
+    public ResponseEntity<?> findById(@PathVariable long id)
     {
-        Zoo z = zooService.findZooById(zooId);
-        return new ResponseEntity<>(z, HttpStatus.OK);
+        return new ResponseEntity<>(zooService.findZooById(id), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{zooName}",
-            produces = {"application/json"})
-    public ResponseEntity<?> getZooByName(
-            @PathVariable
-                    String zooName)
+    // GET
+    // localhost:2019/zoos/zoos/{name}
+    @GetMapping(value = "/{name}", produces = {"application/json"})
+    public ResponseEntity<?> findByName(@PathVariable String name)
     {
-        Zoo z = zooService.findZooByName(zooName);
-        return new ResponseEntity<>(z, HttpStatus.OK);
+        return new ResponseEntity<>(zooService.findZooByName(name), HttpStatus.OK);
     }
 }

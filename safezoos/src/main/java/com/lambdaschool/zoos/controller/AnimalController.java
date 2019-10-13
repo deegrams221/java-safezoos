@@ -16,21 +16,28 @@ public class AnimalController
 {
     @Autowired
     private AnimalService animalService;
-
     @GetMapping(value = "/animals",
-                produces = {"application/json"})
+            produces = {"application/json"})
     public ResponseEntity<?> listAllAnimals()
     {
         return new ResponseEntity<>(animalService.findAll(), HttpStatus.OK);
     }
-
     @GetMapping(value = "/{type}",
-                produces = {"application/json"})
+            produces = {"application/json"})
     public ResponseEntity<?> findAnimalByType(
             @PathVariable
                     String type)
     {
         Animal a = animalService.findAnimalByType(type);
         return new ResponseEntity<>(a, HttpStatus.OK);
+    }
+
+    // animals/count
+    @GetMapping(value = "/count",
+            produces = {"application/json"})
+    public ResponseEntity<?> getAnimalCount()
+    {
+        System.out.println("HERE");
+        return new ResponseEntity<>(animalService.getAnimalCount(), HttpStatus.OK);
     }
 }

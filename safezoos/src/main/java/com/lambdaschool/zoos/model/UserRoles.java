@@ -6,21 +6,20 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "userroles")
+@Table(name = "userroles",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"userid", "roleid"})})
 public class UserRoles extends Auditable implements Serializable
 {
-    // user id
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"userRoles", "hibernateLazyInitializer"})
+    @ManyToOne
     @JoinColumn(name = "userid")
+    @JsonIgnoreProperties("userroles")
     private User user;
 
-    // role id
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "roleid")
-    @JsonIgnoreProperties({"userRoles", "hibernateLazyInitializer"})
+    @JsonIgnoreProperties("userroles")
     private Role role;
 
     // default constructor
@@ -29,13 +28,14 @@ public class UserRoles extends Auditable implements Serializable
     }
 
     // constructors
-    public UserRoles(User user, Role role)
+    public UserRoles(User user,
+                     Role role)
     {
         this.user = user;
         this.role = role;
     }
 
-    // Getters and Setters
+    // getters and setters
     public User getUser()
     {
         return user;
@@ -56,7 +56,7 @@ public class UserRoles extends Auditable implements Serializable
         this.role = role;
     }
 
-    // method overrides
+    // override methods
     @Override
     public boolean equals(Object o)
     {
@@ -75,7 +75,14 @@ public class UserRoles extends Auditable implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getUser(), getRole());
+        return Objects.hash(getUser(),
+                getRole());
+    }
+
+    // toString
+    @Override
+    public String toString()
+    {
+        return "UserRoles{" + "user=" + user.getUserid() + ", role=" + role.getRoleid() + '}';
     }
 }
-

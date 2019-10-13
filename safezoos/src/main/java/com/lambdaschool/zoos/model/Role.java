@@ -15,7 +15,7 @@ public class Role extends Auditable
 
     @Column(nullable = false,
             unique = true)
-    String name;
+    private String name;
 
     // map over 'role' to userRoles
     @OneToMany(mappedBy = "role",
@@ -31,7 +31,7 @@ public class Role extends Auditable
     // constructor
     public Role(String name)
     {
-        this.name = name;
+        this.name = name.toUpperCase();
     }
 
     // Getters and Settters
@@ -47,12 +47,18 @@ public class Role extends Auditable
 
     public String getName()
     {
-        return name;
+        if (name == null)
+        {
+            return null;
+        } else
+        {
+            return name.toUpperCase();
+        }
     }
 
     public void setName(String name)
     {
-        this.name = name;
+        this.name = name.toUpperCase();
     }
 
     public List<UserRoles> getUserRoles()
