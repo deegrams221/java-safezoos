@@ -22,8 +22,8 @@ public class AdminController
     ZooService zooService;
 
     @PutMapping(value = "/zoos/{id}",
-                produces = {"application/json"},
-                consumes = {"application/json"})
+            produces = {"application/json"},
+            consumes = {"application/json"})
     public ResponseEntity<?> updateZoo(
             @RequestBody
                     Zoo updateZoo,
@@ -36,8 +36,8 @@ public class AdminController
 
     // POST localhost:2019/admin/zoos
     @PostMapping(value = "/zoos",
-                 consumes = {"application/json"},
-                 produces = {"application/json"})
+            consumes = {"application/json"},
+            produces = {"application/json"})
     public ResponseEntity<?> addNewZoo(HttpServletRequest request, @Valid
     @RequestBody
             Zoo newZoo) throws URISyntaxException
@@ -65,10 +65,10 @@ public class AdminController
 
     @PostMapping(value = "/zoos/{zooid}/animals/{animalid}")
     public ResponseEntity<?> saveZooAnimalCombo(HttpServletRequest request,
-            @PathVariable("zooid")
-                    long zooid,
-            @PathVariable("animalid")
-                    long animalid)
+                                                @PathVariable("zooid")
+                                                        long zooid,
+                                                @PathVariable("animalid")
+                                                        long animalid)
     {
 //        zooService.saveZooAnimalCombo(zooid, animalid);
 

@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 
@@ -82,7 +81,7 @@ public class ZooServiceImpl implements ZooService
     public Zoo update(Zoo zoo, long id)
     {
         Zoo currentZoo = zoorepos.findById(id)
-                  .orElseThrow(() -> new EntityNotFoundException(Long.toString(id)));
+                .orElseThrow(() -> new EntityNotFoundException(Long.toString(id)));
 
         if (zoo.getZooname() != null)
         {
